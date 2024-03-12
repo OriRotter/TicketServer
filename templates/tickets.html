@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .ticket {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+            text-align: left;
+        }
+        .ticket img {
+            display: block;
+            margin: 0 auto;
+        }
+        .ticket-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tickets</h1>
+    {% for ticket_hash, ticket_info in tickets_info.items() %}
+        <div class="ticket">
+            <h2>Ticket Information</h2>
+            <div class="ticket-info">
+                <p><strong>Order Number:</strong> {{ ticket_info[0] }}</p>
+                <p><strong>Place:</strong> {{ ticket_info[1] }}</p>
+                <p><strong>Row:</strong> {{ ticket_info[2] }}</p>
+                <p><strong>Column:</strong> {{ ticket_info[3] }}</p>
+                <p><strong>Ticket Number:</strong> {{ ticket_info[4] }}</p>
+                <p><strong>Used:</strong> {{ ticket_info[5] }}</p>
+            </div>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ ticket_hash }}&size=250" alt="QR Code">
+        </div>
+    {% endfor %}
+</body>
+</html>

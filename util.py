@@ -1,11 +1,12 @@
 from Classes import *
 from Strings import *
 
+
 def use_hash(show_id, ticket_hash):
-    if not os.path.exists(hash_path(showID=showID)):
+    if not os.path.exists(hash_path(showID=show_id)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(hash_path(showID=showID)) as conn:
+    with sqlite3.connect(hash_path(showID=show_id)) as conn:
         cursor = conn.cursor()
         used = cursor.execute('SELECT 1 FROM Tickets WHERE Row = 2 AND Column = 2', (ticket_hash,)).fetchone()
 
@@ -35,10 +36,10 @@ def check_seat(show_id, seat):
 
 
 def get_info_by_hash(show_id, ticket_hash):
-    if not os.path.exists(hash_path(showID=showID)):
+    if not os.path.exists(hash_path(showID=show_id)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(hash_path(showID=showID)) as conn:
+    with sqlite3.connect(hash_path(showID=show_id)) as conn:
         cursor = conn.cursor()
         ticket_info = cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE Hash = ?''', (ticket_hash,)).fetchone()
@@ -50,10 +51,10 @@ def get_info_by_hash(show_id, ticket_hash):
 
 
 def get_info_by_ticket_number(show_id, ticket_num):
-    if not os.path.exists(hash_path(showID=showID)):
+    if not os.path.exists(hash_path(showID=show_id)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(hash_path(showID=showID)) as conn:
+    with sqlite3.connect(hash_path(showID=show_id)) as conn:
         cursor = conn.cursor()
         ticket_info = cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE TicketNumber = ?''', (ticket_num,)).fetchone()
@@ -66,7 +67,37 @@ def get_info_by_ticket_number(show_id, ticket_num):
 
 def create_tickets(show_id, seats, phone_number, email, name=None):
     for seat in seats:
-        if not check_seat(show_id=show_id,seat=seat):
-            raise ValueError("Seat is taken.")
+        if not check_seat(show_id=show_id, seat=seat):
+            raise ValueError(f"Seat is taken. {seat.place}:{seat.row},{seat.column}")
     tickets = TicketGroup(show_id=show_id, seats=seats, phone_number=phone_number, email=email, name=name)
     return tickets.get_tickets()
+
+
+
+def create_show(show_id):
+    try:
+        os.mkdir(folder_path(showID=show_id))
+    except FileExistsError:
+        pass
+    with open(order_path(showID=show_id), 'w') as f:
+        with sqlite3.connect(order_path(showID=show_id)) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''CREATE TABLE IF NOT EXISTS Orders (
+                            "OrderNumber" INTEGER NOT NULL,
+                            "Name" TEXT,
+                            "Email" TEXT NOT NULL,
+                            "PhoneNumber" TEXT NOT NULL
+                              )''')
+
+    with open(hash_path(showID=show_id), 'w') as f:
+        with sqlite3.connect(hash_path(showID=show_id)) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''CREATE TABLE IF NOT EXISTS Tickets (
+                            "OrderNumber" INTEGER NOT NULL,
+                            "Place" TEXT,
+                            "Row" INTEGER,
+                            "Column" INTEGER,
+                            "TicketNumber" INTEGER NOT NULL,
+                            "Used" BOOLEAN NOT NULL,
+                            "Hash" TEXT NOT NULL
+                              )''')

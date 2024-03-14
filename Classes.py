@@ -169,15 +169,6 @@ class TicketGroup:
         try:
             with sqlite3.connect(hash_path(showID=self._show_id)) as conn:
                 cursor = conn.cursor()
-                cursor.execute('''CREATE TABLE IF NOT EXISTS Tickets (
-                                "OrderNumber" INTEGER NOT NULL,
-                                "Place" TEXT,
-                                "Row" INTEGER,
-                                "Column" INTEGER,
-                                "TicketNumber" INTEGER NOT NULL,
-                                "Used" BOOLEAN NOT NULL,
-                                "Hash" TEXT NOT NULL
-                                  )''')
                 max_ticket_number = cursor.execute("SELECT MAX(TicketNumber) FROM Tickets").fetchone()[0]
                 return max_ticket_number + 1 if max_ticket_number is not None else 1
         except:
@@ -187,12 +178,6 @@ class TicketGroup:
         try:
             with sqlite3.connect(order_path(showID=self._show_id)) as conn:
                 cursor = conn.cursor()
-                cursor.execute('''CREATE TABLE IF NOT EXISTS Orders (
-                                "OrderNumber" INTEGER NOT NULL,
-                                "Name" TEXT,
-                                "Email" TEXT NOT NULL,
-                                "PhoneNumber" TEXT NOT NULL
-                                  )''')
                 max_order_number = cursor.execute("SELECT MAX(OrderNumber) FROM Orders").fetchone()[0]
                 return max_order_number + 1 if max_order_number is not None else 1
         except:

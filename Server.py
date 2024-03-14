@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from util import *
-from Seat import Seat
+from Classes import Seat
 
 app = Flask(__name__)
 

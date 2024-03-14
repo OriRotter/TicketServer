@@ -1,13 +1,11 @@
-import os
-import sqlite3
-from TicketGroup import TicketGroup
-
+from Classes import *
+from Strings import *
 
 def use_hash(show_id, ticket_hash):
-    if not os.path.exists(f"Databases/{show_id}/{show_id}-hashes.db"):
+    if not os.path.exists(hash_path(showID=showID)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(f"Databases/{show_id}/{show_id}-hashes.db") as conn:
+    with sqlite3.connect(hash_path(showID=showID)) as conn:
         cursor = conn.cursor()
         used = cursor.execute('SELECT 1 FROM Tickets WHERE Row = 2 AND Column = 2', (ticket_hash,)).fetchone()
 
@@ -23,10 +21,10 @@ def use_hash(show_id, ticket_hash):
 
 
 def check_seat(show_id, seat):
-    if not os.path.exists(f"Databases/{show_id}/{show_id}-hashes.db"):
+    if not os.path.exists(hash_path(showID=show_id)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(f"Databases/{show_id}/{show_id}-hashes.db") as conn:
+    with sqlite3.connect(hash_path(showID=show_id)) as conn:
         cursor = conn.cursor()
         check = cursor.execute('SELECT 1 FROM Tickets WHERE Row = ? AND Column = ? AND Place = ?',
                                (seat.row, seat.column, seat.place)).fetchone()
@@ -37,10 +35,10 @@ def check_seat(show_id, seat):
 
 
 def get_info_by_hash(show_id, ticket_hash):
-    if not os.path.exists(f"Databases/{show_id}/{show_id}-hashes.db"):
+    if not os.path.exists(hash_path(showID=showID)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(f"Databases/{show_id}/{show_id}-hashes.db") as conn:
+    with sqlite3.connect(hash_path(showID=showID)) as conn:
         cursor = conn.cursor()
         ticket_info = cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE Hash = ?''', (ticket_hash,)).fetchone()
@@ -52,10 +50,10 @@ def get_info_by_hash(show_id, ticket_hash):
 
 
 def get_info_by_ticket_number(show_id, ticket_num):
-    if not os.path.exists(f"Databases/{show_id}/{show_id}-hashes.db"):
+    if not os.path.exists(hash_path(showID=showID)):
         raise ValueError("No such show ID.")
 
-    with sqlite3.connect(f"Databases/{show_id}/{show_id}-hashes.db") as conn:
+    with sqlite3.connect(hash_path(showID=showID)) as conn:
         cursor = conn.cursor()
         ticket_info = cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE TicketNumber = ?''', (ticket_num,)).fetchone()

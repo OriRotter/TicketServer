@@ -24,16 +24,25 @@ def show_tickets():
         phone_number = request.form['phoneNumber'].strip()
         name = request.form['name'].strip()
         place = request.form['place'].strip()
-        row = request.form['row'].strip()
-        column = request.form['column'].strip()
+        row = request.form['row'].strip().split(',')
+        column = request.form['column'].strip().split(',')
+        print(row)
+        print(column)
 
+        seats = []
+        try:
+            for seatY in row:
+                for seatX in column:
+                    seats.append(Seat(place=place, row=int(seatY), column=int(seatX)))
+        except:
+            raise ValueError("Not valid seats inputs")
         # Create tickets and generate QR codes
         tickets_info = create_tickets(
             show_id=int(show_id),
             email=email,
             phone_number=phone_number,
             name=name,
-            seats=[Seat(place=place, row=int(row), column=int(column))]
+            seats=seats
         )
         print(tickets_info)
 

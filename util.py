@@ -50,6 +50,34 @@ def get_info_by_hash(show_id, ticket_hash):
         return ticket_info
 
 
+def get_info_by_somthing(show_id, something):
+    if not os.path.exists(hash_path(showID=show_id)):
+        raise ValueError("No such show ID.")
+
+    ticket_info = []
+    with sqlite3.connect(hash_path(showID=show_id)) as conn:
+        cursor = conn.cursor()
+        try:
+            ticket_info += cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
+                                            FROM Tickets WHERE OrderNumber = ? OR TicketNumber = ? OR Hash = ? ''', (something, something, something)).fetchone()
+        except:
+            pass
+
+
+
+    with sqlite3.connect(order_path(showID=show_id)) as conn:
+        cursor = conn.cursor()
+        try:
+            ticket_info += cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
+                                            FROM Orders WHERE OrderNumber = ? OR Name = ? OR Email = ? OR PhoneNumber = ? ''', (something, something, something, something)).fetchone()
+        except:
+            pass
+    if ticket_info is None:
+        return f"404 no such {something}."
+
+    return ticket_info
+
+
 def get_info_by_ticket_number(show_id, ticket_num):
     if not os.path.exists(hash_path(showID=show_id)):
         raise ValueError("No such show ID.")
@@ -79,6 +107,7 @@ def create_show(show_id):
         os.mkdir(folder_path(showID=show_id))
     except FileExistsError:
         pass
+
     with open(order_path(showID=show_id), 'w') as f:
         with sqlite3.connect(order_path(showID=show_id)) as conn:
             cursor = conn.cursor()
@@ -101,3 +130,6 @@ def create_show(show_id):
                             "Used" BOOLEAN NOT NULL,
                             "Hash" TEXT NOT NULL
                               )''')
+
+
+print(get_info_by_somthing(2,"אורי רוטר"))

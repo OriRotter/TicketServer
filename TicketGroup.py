@@ -1,4 +1,4 @@
-from database_control import *
+from DB_CON import DB_CON
 from Ticket import Ticket
 import re
 
@@ -10,17 +10,27 @@ class TicketGroup:
         self._phone_number = phone_number
         self._validate_email(email)
         self._email = email
-        self._order_number = get_order_number(self)
+
+        db = DB_CON(show_id=show_id)
+
+        self._order_number = db.get_order_number()
         self._tickets = []
-        self._ticket_number = get_order_number(self)
+        self._ticket_number = db.get_order_number()
 
         for seat in seats:
             ticket = Ticket(self._order_number, self._show_id, self._ticket_number, seat)
             self._tickets.append(ticket)
             self._ticket_number += 1
 
-        store_order(ticketGroup=self)
-        store_hashes(ticketGroup=self)
+        db.store_order(ticketGroup=self)
+        self._store_hashes(db)
+        db.close_db()
+
+
+
+    def _store_hashes(self, db):
+        for ticket in self._tickets:
+            db.store_ticket(ticket)
 
     def _validate_phone_number(self, phone_number):
         if not re.match(r'^05\d{8}$', phone_number):

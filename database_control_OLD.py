@@ -1,11 +1,47 @@
 import sqlite3
 from Strings import *
+from cryptography.fernet import Fernet
+def encrypt_db(show_id,KEY = KEY):
+    hash = hash_path(show_id)
+    order = order_path(show_id)
+    key = KEY
+    f = Fernet(key)
+    with open(hash, "rb") as file:
+        file_data = file.read()
+    encrypted_data = f.encrypt(file_data)
+    with open(hash, "wb") as file:
+        file.write(encrypted_data)
+
+    with open(order, "rb") as file:
+        file_data = file.read()
+    encrypted_data = f.encrypt(file_data)
+    with open(order, "wb") as file:
+        file.write(encrypted_data)
+
+def decrypt_db(show_id,KEY = KEY):
+    hash = hash_path(show_id)
+    order = order_path(show_id)
+    f = Fernet(KEY)
+    with open(hash, "rb") as file:
+        encrypted_data = file.read()
+
+    decrypted_data = f.decrypt(encrypted_data)
+    with open(hash, "wb") as file:
+        file.write(decrypted_data)
+
+    with open(order, "rb") as file:
+        encrypted_data = file.read()
+
+    decrypted_data = f.decrypt(encrypted_data)
+    with open(order, "wb") as file:
+        file.write(decrypted_data)
 
 
 def use_hash(show_id, ticket_hash):
     db_path = hash_path(showID=show_id)
     if not os.path.exists(db_path):
         raise ValueError("No such show ID.")
+
 
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()

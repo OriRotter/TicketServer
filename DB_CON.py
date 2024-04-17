@@ -8,10 +8,14 @@ class DB_CON:
     def __init__(self, show_id):
         self._show_id = show_id
         hashDB = hash_encrypt_path(showID=show_id)
-        self._fileValid(hashDB)
         orderDB = order_encrypt_path(showID=show_id)
-        self._fileValid(orderDB)
-        self._decrypt_db(KEY)
+
+        if self._fileValid(hashDB) and self._fileValid(orderDB):
+            self._decrypt_db(KEY)
+        hashDB = hash_path(show_id)
+        orderDB = order_path(show_id)
+        if not self._fileValid(hashDB) and not self._fileValid(orderDB):
+            raise ValueError("No such show.")
         self._order_conn = sqlite3.connect(orderDB)
         self._hash_conn = sqlite3.connect(hashDB)
         self._order_cursor = self._order_conn.cursor()
@@ -19,7 +23,8 @@ class DB_CON:
 
     def _fileValid(self, path):
         if not os.path.exists(path):
-            raise ValueError("No such show ID.")
+            return False
+        return True
 
     def close_db(self):
         self._hash_conn.commit()
@@ -41,47 +46,51 @@ class DB_CON:
         self._encrypt_db()
 
     def _encrypt_db(self, KEY=KEY):
-        hashDB = hash_path(self._show_id)
-        hashDB_encrypt = hash_encrypt_path(self._show_id)
-        orderDB = order_path(self._show_id)
-        orderDB_encrypt = order_encrypt_path(self._show_id)
-        f = Fernet(KEY)
-        with open(hashDB, "rb") as file:
-            file_data = file.read()
-        encrypted_data = f.encrypt(file_data)
-        with open(hashDB_encrypt, "wb") as file:
-            file.write(encrypted_data)
-        os.remove(hashDB)
+        try:
+            hashDB = hash_path(self._show_id)
+            hashDB_encrypt = hash_encrypt_path(self._show_id)
+            orderDB = order_path(self._show_id)
+            orderDB_encrypt = order_encrypt_path(self._show_id)
+            f = Fernet(KEY)
+            with open(hashDB, "rb") as file:
+                file_data = file.read()
+            os.remove(hashDB)
+            encrypted_data = f.encrypt(file_data)
+            with open(hashDB_encrypt, "wb") as file:
+                file.write(encrypted_data)
 
-        with open(orderDB, "rb") as file:
-            file_data = file.read()
-        encrypted_data = f.encrypt(file_data)
-        with open(orderDB_encrypt, "wb") as file:
-            file.write(encrypted_data)
-        os.remove(hashDB)
-        os.remove(orderDB)
+            with open(orderDB, "rb") as file:
+                file_data = file.read()
+            os.remove(orderDB)
+            encrypted_data = f.encrypt(file_data)
+            with open(orderDB_encrypt, "wb") as file:
+                file.write(encrypted_data)
+        except:
+            return
 
     def _decrypt_db(self, KEY=KEY):
-        hashDB = hash_path(self._show_id)
-        hashDB_encrypt = hash_encrypt_path(self._show_id)
-        orderDB = order_path(self._show_id)
-        orderDB_encrypt = order_encrypt_path(self._show_id)
-        f = Fernet(KEY)
-        with open(hashDB_encrypt, "rb") as file:
-            encrypted_data = file.read()
+        try:
+            hashDB = hash_path(self._show_id)
+            hashDB_encrypt = hash_encrypt_path(self._show_id)
+            orderDB = order_path(self._show_id)
+            orderDB_encrypt = order_encrypt_path(self._show_id)
+            f = Fernet(KEY)
+            with open(hashDB_encrypt, "rb") as file:
+                encrypted_data = file.read()
+            os.remove(hashDB_encrypt)
+            decrypted_data = f.decrypt(encrypted_data)
+            with open(hashDB, "wb") as file:
+                file.write(decrypted_data)
 
-        decrypted_data = f.decrypt(encrypted_data)
-        with open(hashDB, "wb") as file:
-            file.write(decrypted_data)
+            with open(orderDB_encrypt, "rb") as file:
+                encrypted_data = file.read()
+            os.remove(orderDB_encrypt)
 
-        with open(orderDB_encrypt, "rb") as file:
-            encrypted_data = file.read()
-
-        decrypted_data = f.decrypt(encrypted_data)
-        with open(orderDB, "wb") as file:
-            file.write(decrypted_data)
-        os.remove(hashDB_encrypt)
-        os.remove(orderDB_encrypt)
+            decrypted_data = f.decrypt(encrypted_data)
+            with open(orderDB, "wb") as file:
+                file.write(decrypted_data)
+        except:
+            return
 
     def use_hash(self, ticket_hash):
         used = self._hash_cursor.execute('SELECT Used FROM Tickets WHERE Hash = ?', (ticket_hash,)).fetchone()

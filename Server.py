@@ -19,36 +19,36 @@ def buy():
 
 @app.route('/buy', methods=["POST"])
 def show_tickets():
-    # try:
-    # Sanitize user inputs
-    show_id = int(request.form['showID'].strip())
-    email = request.form['email'].strip()
-    phone_number = request.form['phoneNumber'].strip()
-    name = request.form['name'].strip()
-    place = request.form['place'].strip()
-    rows = list(map(int, request.form['row'].strip().split(',')))
-    columns = list(map(int, request.form['column'].strip().split(',')))
+    try:
+        # Sanitize user inputs
+        show_id = int(request.form['showID'].strip())
+        email = request.form['email'].strip()
+        phone_number = request.form['phoneNumber'].strip()
+        name = request.form['name'].strip()
+        place = request.form['place'].strip()
+        rows = list(map(int, request.form['row'].strip().split(',')))
+        columns = list(map(int, request.form['column'].strip().split(',')))
 
-    seats = [Seat(place=place, row=row, column=column) for row, column in zip(rows, columns)]
+        seats = [Seat(place=place, row=row, column=column) for row, column in zip(rows, columns)]
 
-    # Create tickets and generate QR codes
-    tickets_info = create_tickets(
-        show_id=show_id,
-        email=email,
-        phone_number=phone_number,
-        name=name,
-        seats=seats
-    )
+        # Create tickets and generate QR codes
+        tickets_info = create_tickets(
+            show_id=show_id,
+            email=email,
+            phone_number=phone_number,
+            name=name,
+            seats=seats
+        )
 
-    return render_template("tickets.html", tickets_info=tickets_info)
+        return render_template("tickets.html", tickets_info=tickets_info)
 
-    # except ValueError as ve:
-    #     app.logger.error("Invalid input format: %s", ve)
-    #     return render_template("error.html", error_message=f"Invalid input format. {ve}")
-    #
-    # except Exception as e:
-    #     app.logger.error("An error occurred during ticket creation: %s", e)
-    #     return render_template("error.html", error_message=f"An error occurred during ticket creation. {e}")
+    except ValueError as ve:
+        app.logger.error("Invalid input format: %s", ve)
+        return render_template("error.html", error_message=f"Invalid input format. {ve}")
+
+    except Exception as e:
+        app.logger.error("An error occurred during ticket creation: %s", e)
+        return render_template("error.html", error_message=f"An error occurred during ticket creation. {e}")
 
 
 @app.route('/use', methods=["POST"])

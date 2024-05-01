@@ -20,6 +20,44 @@ def create_tickets(show_id, seats, phone_number, email, name=None):
     return info
 
 
+def updateSeatMap(show_id, seats):
+    try:
+        with open(f"Databases/{show_id}/seatMap.txt", 'r') as f:
+            data = f.readlines()
+        for seat in seats:
+            data[seat.row-1] = data[seat.row-1].replace('\n','').split(',')
+            data[seat.row-1][seat.column-1] = 1
+            data[seat.row-1] = ','.join(str(e) for e in data[seat.row-1])
+            data[seat.row-1] += "\n"
+        print("wow")
+        with open(f"Databases/{show_id}/seatMap.txt", 'w') as f:
+            f.write(''.join(str(e) for e in data))
+    except:
+        return
+def getSeatMap(show_id):
+    try:
+        with open(f"Databases/{show_id}/seatMap.txt", 'r') as f:
+            seat_map = f.readlines()
+        processed_seat_map = []
+        for row_index, row in enumerate(seat_map):
+            row = row.strip().split(',')
+            processed_row = [
+                {'status': 'seat' if seat == '0' else 'seat sold' if seat == '1' else 'space',
+                 'index': f"{row_index + 1},{seat_index + 1}" if seat == '0' or seat == '1' else None} for
+                seat_index, seat in enumerate(row)]
+            processed_seat_map.append(processed_row)
+        return processed_seat_map
+    except:
+        with open(f"Databases/seatMap.txt", 'r') as f:
+            seat_map = f.readlines()
+        processed_seat_map = []
+        for row_index, row in enumerate(seat_map):
+            row = row.strip().split(',')
+            processed_row = [
+                {'status': 'seat' if seat == '0' else 'seat sold' if seat == '1' else 'space',
+                 'index': f"{row_index + 1},{seat_index + 1}"} for seat_index, seat in enumerate(row)]
+            processed_seat_map.append(processed_row)
+        return processed_seat_map
 def create_show(show_id):
     # Create directory for the show if it doesn't exist
     try:

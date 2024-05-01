@@ -1,6 +1,6 @@
 from Strings import *
 from cryptography.fernet import Fernet
-
+from util import *
 def encrypt_db(show_id, KEY=KEY):
     try:
         hashDB = hash_path(show_id)
@@ -49,4 +49,4 @@ def decrypt_db(show_id, KEY=KEY):
     except:
         return
 
-encrypt_db(1)
+create_show(1)

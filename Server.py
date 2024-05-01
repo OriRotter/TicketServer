@@ -1,20 +1,23 @@
-from flask import Flask, render_template, request
-from util import create_tickets
+# Import necessary modules and classes
+from flask import Flask, render_template, request, send_file
+from util import create_tickets, getSeatMap, updateSeatMap
 from Seat import Seat
 from DB_CON import DB_CON
 import os
 
+# Initialize Flask application
 app = Flask(__name__)
 
 
+# Define route handlers
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
-@app.route("/buy", methods=["GET"])
+@app.route('/buy', methods=["GET"])
 def buy():
-    return render_template("buy.html")
+    return render_template("buy.html", seatMap=getSeatMap(1))
 
 
 @app.route('/buy', methods=["POST"])
@@ -26,12 +29,13 @@ def show_tickets():
         phone_number = request.form['phoneNumber'].strip()
         name = request.form['name'].strip()
         place = request.form['place'].strip()
-        rows = list(map(int, request.form['row'].strip().split(',')))
-        columns = list(map(int, request.form['column'].strip().split(',')))
+        seatsUser = request.form['seats'].split('.')
+        seats = []
+        for seat in seatsUser:
+            seat = seat.split(',')
+            seats.append(Seat(place=place, row=int(seat[0]), column=int(seat[1])))
 
-        seats = [Seat(place=place, row=row, column=column) for row, column in zip(rows, columns)]
-
-        # Create tickets and generate QR codes
+        # Create tickets and update seat map
         tickets_info = create_tickets(
             show_id=show_id,
             email=email,
@@ -39,7 +43,9 @@ def show_tickets():
             name=name,
             seats=seats
         )
+        updateSeatMap(show_id, seats)
 
+        # Render tickets page
         return render_template("tickets.html", tickets_info=tickets_info)
 
     except ValueError as ve:
@@ -72,6 +78,12 @@ def use():
         return render_template("error.html", error_message=f"An error occurred during ticket usage. {e}")
 
 
+@app.route('/images/seat-icon.png', methods=["GET"])
+def seat_icon():
+    return send_file("templates/images/seat-icon.png", mimetype="image/gif")
+
+
+# Run the Flask application
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 25565))
     app.run(host='0.0.0.0', port=port)

@@ -26,27 +26,26 @@ def encrypt_db(show_id, KEY=KEY):
 
 
 def decrypt_db(show_id, KEY=KEY):
-    try:
-        hashDB = hash_path(show_id)
-        hashDB_encrypt = hash_encrypt_path(show_id)
-        orderDB = order_path(show_id)
-        orderDB_encrypt = order_encrypt_path(show_id)
-        f = Fernet(KEY)
-        with open(hashDB_encrypt, "rb") as file:
-            encrypted_data = file.read()
-        os.remove(hashDB_encrypt)
-        decrypted_data = f.decrypt(encrypted_data)
-        with open(hashDB, "wb") as file:
-            file.write(decrypted_data)
+    hashDB = hash_path(show_id)
+    hashDB_encrypt = hash_encrypt_path(show_id)
+    orderDB = order_path(show_id)
+    orderDB_encrypt = order_encrypt_path(show_id)
+    f = Fernet(KEY)
+    with open(hashDB_encrypt, "rb") as file:
+        encrypted_data = file.read()
+    os.remove(hashDB_encrypt)
+    decrypted_data = f.decrypt(encrypted_data)
+    with open(hashDB, "wb") as file:
+        file.write(decrypted_data)
 
-        with open(orderDB_encrypt, "rb") as file:
-            encrypted_data = file.read()
-        os.remove(orderDB_encrypt)
+    with open(orderDB_encrypt, "rb") as file:
+        encrypted_data = file.read()
+    os.remove(orderDB_encrypt)
 
-        decrypted_data = f.decrypt(encrypted_data)
-        with open(orderDB, "wb") as file:
-            file.write(decrypted_data)
-    except:
-        return
+    decrypted_data = f.decrypt(encrypted_data)
+    with open(orderDB, "wb") as file:
+        file.write(decrypted_data)
 
-create_show(1)
+list1 = [1, 2, 3]
+str1 = ','.join(str(e) for e in list1)
+print(str1)

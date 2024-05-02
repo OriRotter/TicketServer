@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto;
+      padding: 10px;
+      position: relative;
+    }
+    .grid-item {
+      padding: 20px;
+      font-size: 30px;
+      text-align: center;
+    }
+    .btn {
+      font-family: "Carmela", sans-serif;
+      height: 100px;
+      width: 100px;
+      background-color: #555555;
+      color: white;
+    }
+    #btn1, #btn2 {
+      /* Additional styles for specific buttons if needed */
+    }
+    h2 {
+      font-family: "Carmela", sans-serif;
+    }
+  </style>
+  <title>לוח אדמין</title>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid-item"></div>
+    <div class="grid-item">
+      <h2>Operate buttons</h2>
+    </div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item">
+      <form action="/create_show" method="post">
+        <button type="submit" value="true" name="create_show" class="btn btn-default" id="btn1">
+          <span>Create show</span>
+        </button>
+      </form>
+    </div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+  </div>
+</body>
+</html>

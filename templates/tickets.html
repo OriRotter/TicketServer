@@ -28,6 +28,8 @@
 </head>
 <body>
     <h1>Tickets</h1>
+    <h2>Order number: {{order_info[0]}}</h2>
+    <h2>Name: {{order_info[1]}}</h2>
     {% for ticket_hash, ticket_info in tickets_info.items() %}
         <div class="ticket">
             <h2>Ticket Information</h2>

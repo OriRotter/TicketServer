@@ -29,7 +29,6 @@ def updateSeatMap(show_id, seats):
             data[seat.row-1][seat.column-1] = 1
             data[seat.row-1] = ','.join(str(e) for e in data[seat.row-1])
             data[seat.row-1] += "\n"
-        print("wow")
         with open(f"Databases/{show_id}/seatMap.txt", 'w') as f:
             f.write(''.join(str(e) for e in data))
     except:
@@ -58,6 +57,19 @@ def getSeatMap(show_id):
                  'index': f"{row_index + 1},{seat_index + 1}"} for seat_index, seat in enumerate(row)]
             processed_seat_map.append(processed_row)
         return processed_seat_map
+
+def createSeatMap(show_id, seat_map):
+    try:
+        with open(f"Databases/{show_id}/seatMap.txt", 'w') as f:
+            data = ""
+            for line in seat_map:
+                data += ",".join(str(seat) for seat in line)
+                data += "\n"
+            f.write(data)
+    except:
+        raise ValueError("Can not create seat map.")
+
+
 def create_show(show_id):
     # Create directory for the show if it doesn't exist
     try:

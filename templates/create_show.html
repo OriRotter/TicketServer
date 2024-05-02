@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create show</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            color: #403866;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        label {
+            font-size: 18px;
+            color: #666666;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+        .required::after {
+            content: "*";
+            color: #ff0000;
+            margin-left: 5px;
+        }
+        .note {
+            font-size: 14px;
+            color: #ff0000; /* Red */
+            margin-top: 10px;
+            text-align: right;
+            font-weight: bold; /* Make the text bold for emphasis */
+        }
+        a {
+            text-decoration: none;
+        }
+        li {
+            list-style: none;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+        .space {
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+        }
+        .seat {
+            background-color: var(--white-clr);
+            background-image: url(images/seat-icon.png);
+            background-size: cover;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .art {
+            background-color: var(--white-clr);
+            background-image: url(images/art-icon.png);
+            background-size: cover;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .main-container {
+            height: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: var(--grey-inner);
+            border-radius: 48px;
+            width: 40rem;
+        }
+        .movie-container {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        select {
+            border: none;
+            direction: rtl;
+            border-radius: 8px;
+            width: 8rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .picture {
+            height: 500px;
+            object-fit: cover;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        option {
+            text-align: left;
+        }
+        .seat.sold {
+            background-color: gray;
+        }
+        .seat.selected {
+            background-color: cyan;
+        }
+        .showcase-container li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .showcase-container .seat:hover,
+        .showcase-container .art:hover,
+        .showcase-container .seat.sold:hover {
+            cursor: pointer;
+        }
+        .showcase-container {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.05);
+            height: 2.5rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .seating-container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            perspective: 1000px;
+        }
+        .screen {
+            margin-bottom: 1rem;
+            background-color: gray;
+            width: 12rem;
+            height: 2rem;
+            padding: 3rem;
+            transform: rotateX(-45deg);
+            box-shadow: 0 25px 25px rgba(255, 255, 255, 0.8);
+        }
+        .row {
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 1.2rem;
+        }
+        .summary {
+            margin-top: 1rem;
+            text-align: justify;
+        }
+        @media screen and (max-width: 375px) {
+            .container {
+                width: 25rem;
+            }
+            .showcase-container li {
+                margin-right: 1rem;
+            }
+            .row {
+                column-gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>יצירת מופע </h1>
+        <form id="ticketForm" action="/create_show" method="post">
+            <div class="form-group">
+                <label for="showID" class="required">מספר מופע:</label>
+                <input type="number" id="showID" name="showID" required>
+            </div>
+            <div class="form-group">
+                <label for="name" class="required">שם המופע:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="price" class="required">מחיר כרטיס:</label>
+                <input type="number" id="price" name="price" required>
+            </div>
+            <div class="form-group picture">
+                <label for="img">תמונה למופע: </label>
+                <input class="file-uploader" onchange="upload()" type="file" id="img" name="img" accept="image/*">
+            </div>
+            <div class="main-container">
+                <div class="container">
+                    <div class="movie-container">
+<!--                        <label for="place">בחר מקום:</label>-->
+<!--                        <select name="place" id="place">-->
+<!--                            <option value="יציע" price="150"> יציע </option>-->
+<!--                            <option value="אולם" price="170"> אולם </option>-->
+<!--                        </select>-->
+                    </div>
+                    <ul class="showcase-container">
+                        <li><div class="seat sold"></div><small>תפוס</small></li>
+                        <li><div class="seat available"></div><small>פנוי</small></li>
+                        <li><div class="art newline"></div><small>שורה</small></li>
+                        <li><div class="art space"></div><small>רווח</small></li>
+                    </ul>
+                    <div class="seating-container">
+                        <div class="screen"></div>
+                        <!-- Seating map will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="submit" onclick="submitForm()">קנייה</button>
+                <p class="note">* שדות חובה</p>
+            </div>
+            <!-- Hidden submit button -->
+            <button type="submit" id="hiddenSubmit" style="display: none;"></button>
+        </form>
+    </div>
+    <script>
+        function upload() {
+            const fileUploadInput = document.querySelector('.file-uploader');
+            const image = fileUploadInput.files[0];
+
+            if (!image.type.includes('image')) {
+                return alert('Only images are allowed!');
+            }
+
+            if (image.size > 10_000_000) {
+                return alert('Maximum upload size is 10MB!');
+            }
+
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(image);
+
+            fileReader.onload = (fileReaderEvent) => {
+                const picture = document.querySelector('.picture');
+                picture.style.backgroundImage = `url(${fileReaderEvent.target.result})`;
+            }
+        }
+
+        function submitForm() {
+            // Validate required fields
+            const showID = document.getElementById('showID').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const price = document.getElementById('price').value.trim();
+
+            if (!showID || !name || !price) {
+                alert('Please fill out all required fields.');
+                return; // Prevent form submission
+            }
+
+            // Gather seat map data
+            const seatingContainer = document.querySelector('.seating-container');
+            const seatMap = [];
+            seatingContainer.querySelectorAll('.row').forEach(row => {
+                const rowData = [];
+                row.querySelectorAll('*').forEach(seat => {
+                    if (seat.classList.contains('available')) {
+                        rowData.push(1); // Available seat
+                    } else if (seat.classList.contains('sold')) {
+                        rowData.push(0); // Sold seat
+                    } else if (seat.classList.contains('space')) {
+                        rowData.push(-1); // Space
+                    }
+                });
+                seatMap.push(rowData);
+            });
+
+            // Append seat map data to form
+            const seatMapInput = document.createElement('input');
+            seatMapInput.type = 'hidden';
+            seatMapInput.name = 'seatMap';
+            seatMapInput.value = JSON.stringify(seatMap);
+
+            const ticketForm = document.getElementById('ticketForm');
+            if (ticketForm) {
+                ticketForm.appendChild(seatMapInput);
+                // Trigger click event of hidden submit button
+                document.getElementById('hiddenSubmit').click();
+            } else {
+                console.error('Form with id "ticketForm" not found.');
+            }
+        }
+
+        // Select elements
+<!--        const movieEl = document.getElementById(`place`);-->
+        const showcaseContainerEl = document.querySelector(`.showcase-container`);
+        const seatContainerEl = document.querySelector(`.seating-container`);
+
+        showcaseContainerEl.addEventListener(`click`, function (e) {
+            const classNames = ['seat available', 'seat sold', 'art space'];
+            if (classNames.includes(e.target.className)) {
+                let seat = document.createElement("div");
+                seat.className = e.target.className;
+                if(e.target.className == "art space")
+                {
+                    seat.className = "space";
+                }
+                seatContainerEl.lastChild.appendChild(seat);
+            }
+            else if (e.target.className == "art newline")
+            {
+                let seat = document.createElement("div");
+                seat.className = "row";
+                seatContainerEl.appendChild(seat);
+            }
+        });
+    </script>
+</body>
+</html>

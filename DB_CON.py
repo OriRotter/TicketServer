@@ -35,7 +35,6 @@ class DB_CON:
         self._order_conn.close()
         self._encrypt_db()
 
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._hash_conn.commit()
         self._order_conn.commit()
@@ -107,7 +106,7 @@ class DB_CON:
 
     def check_seat(self, seat):
         check = self._hash_cursor.execute('SELECT 1 FROM Tickets WHERE Row = ? AND Column = ? AND Place = ?',
-                                        (seat.row, seat.column, seat.place)).fetchone()
+                                          (seat.row, seat.column, seat.place)).fetchone()
 
         return check is None
 
@@ -122,15 +121,28 @@ class DB_CON:
         try:
             ticket_info += self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                             FROM Tickets WHERE OrderNumber = ? OR TicketNumber = ? OR Hash = ? ''',
-                                                   (something, something, something)).fetchone()
+                                                     (something, something, something)).fetchall()
             ticket_info += self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
                                             FROM Orders WHERE OrderNumber = ? OR Name = ? OR Email = ? OR PhoneNumber = ? ''',
-                                                    (something, something, something, something)).fetchone()
+                                                      (something, something, something, something)).fetchall()
         except sqlite3.Error:
             pass
 
         return ticket_info or f"404 no such {something}."
 
+    def get_info_by_orderNumber_ticket(self, order_number):
+        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used, Hash
+                                            FROM Tickets WHERE OrderNumber = ?''',
+                                                     (order_number,)).fetchall()
+
+        return ticket_info or f"404 no such {order_number}."
+
+    def get_info_by_orderNumber_order(self, order_number):
+        order_info = self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
+                                            FROM Orders WHERE OrderNumber = ?''',
+                                                     (order_number,)).fetchone()
+
+        return order_info or f"404 no such {order_number}."
     def get_info_by_ticket_number(self, ticket_num):
         ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE TicketNumber = ?''', (ticket_num,)).fetchone()
@@ -140,8 +152,8 @@ class DB_CON:
     def store_ticket(self, ticket):
         self._hash_cursor.execute('''INSERT INTO Tickets (OrderNumber, Place, Row, Column, TicketNumber, Used, Hash)
                           VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                                (ticket.order_number, ticket.place, ticket.row, ticket.column,
-                                 ticket.ticket_num, ticket.used, ticket.hash))
+                                  (ticket.order_number, ticket.place, ticket.row, ticket.column,
+                                   ticket.ticket_num, ticket.used, ticket.hash))
         self._hash_conn.commit()
 
     def get_ticket_number(self):
@@ -162,10 +174,9 @@ class DB_CON:
     def store_order(self, ticketGroup):
         self._order_cursor.execute('''INSERT INTO Orders (OrderNumber, Name, Email, PhoneNumber)
                                       VALUES (?, ?, ?, ?)''',
-                                 (ticketGroup.order_number, ticketGroup.name, ticketGroup.email,
-                                  ticketGroup.phone_number))
+                                   (ticketGroup.order_number, ticketGroup.name, ticketGroup.email,
+                                    ticketGroup.phone_number))
         self._order_conn.commit()
-
 
     def get_info_tickets(self, ticketGroup):
         ticket_info = {}
@@ -173,4 +184,3 @@ class DB_CON:
             ticket_info[f"{ticket.hash},{ticket.show_id}"] = [
                 ticket.order_number, ticket.place, ticket.row, ticket.column, ticket.ticket_num, bool(ticket._used)]
         return ticket_info
-

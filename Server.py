@@ -36,7 +36,7 @@ def show_tickets():
         for seat in seatsUser:
             seat = seat.split(',')
             seats.append(Seat(place=place, row=int(seat[0]), column=int(seat[1])))
-        db = DB_CON()
+        db = DB_CON(show_id)
         order_info = [db.get_order_number(), name, email, phone_number]
         db.close_db()
         # Create tickets and update seat map
@@ -70,6 +70,7 @@ def use():
         # Use ticket
         db = DB_CON(show_id=show_id)
         result = db.use_hash(ticket_hash=ticket_hash)
+        db.close_db()
         return f"<h1>{result}<h1>"
 
     except ValueError as ve:
@@ -131,21 +132,27 @@ def admin():
 
 @app.route('/create_show', methods=["GET", "POST"])
 def create_show_page():
-    try:
-        if session.get('username') == admin_username and session.get('password'):
-            show_id = int(request.form['showID'].strip())
-            name = request.form['name'].strip()
-            price = int(request.form['price'].strip())
-            seatMap = json.loads(request.form['seatMap'])
-            create_show(show_id)
-            createSeatMap(show_id=show_id, seat_map=seatMap)
-            return render_template("success.html",success_message="The show successfully created.")
-    except:
-        if session.get('username') == admin_username and session.get('password') == admin_password:
-            return render_template("create_show.html")
-
+    if session.get('username') == admin_username and session.get('password'):
+        show_id = int(request.form['showID'].strip())
+        name = request.form['name'].strip()
+        price = int(request.form['price'].strip())
+        seatMap = json.loads(request.form['seatMap'])
+        create_show(show_id)
+        createSeatMap(show_id=show_id, seat_map=seatMap)
+        return render_template("success.html",success_message="The show successfully created.")
     return redirect(url_for('login'))
 
+
+
+@app.route('/get_shows', methods=["GET"])
+def get_shows():
+    a = ['1','2','3']
+    return f"{json.dumps(a)}"
+
+@app.route('/get_shows_id', methods=["GET"])
+def get_shows_id():
+    a = ['1','2','3']
+    return f"{json.dumps(a)}"
 
 @app.route('/test', methods=["GET", "POST"])
 def test():
@@ -161,4 +168,4 @@ def test():
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 25565))
     app.secret_key = KEY
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)

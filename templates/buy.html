@@ -234,11 +234,8 @@
 <body>
     <div class="container">
         <h1>קניית כרטיס למופע </h1>
-        <form id="ticketForm" action="/buy" method="post">
-            <div class="form-group">
-                <label for="showID" class="required">מספר מופע:</label>
-                <input type="number" id="showID" name="showID" required>
-            </div>
+        <h2>{{show_detail.name}} </h2>
+        <form id="ticketForm" action="/order" method="post">
             <div class="form-group">
                 <label for="email" class="required">אימייל:</label>
                 <input type="email" id="email" name="email" required>
@@ -254,11 +251,7 @@
             <div class="main-container">
               <div class="container">
                 <div class="movie-container">
-                  <label for="place">בחר מקום:</label>
-                  <select name="place" id="place">
-                    <option value="יציע" price="150"> יציע </option>
-                    <option value="אולם" price="170"> אולם </option>
-                  </select>
+                  <label>מחיר לכרטיס {{show_detail.price}}</label>
                 </div>
                 <ul class="showcase-container">
                   <li>
@@ -308,10 +301,15 @@
             seatsInput.name = 'seats';
             seatsInput.value = selectedSeatsString;
 
+            const showIDinput = document.createElement('input');
+            showIDinput.type = 'hidden';
+            showIDinput.name = 'showID';
+            showIDinput.value = {{show_detail.show_id|safe}};
             // Check if the form exists
             const ticketForm = document.getElementById('ticketForm');
             if (ticketForm) {
                 ticketForm.appendChild(seatsInput);
+                ticketForm.appendChild(showIDinput);
                 ticketForm.submit();
             } else {
                 console.error('Form with id "ticketForm" not found.');
@@ -322,27 +320,20 @@
 
        `use strict`;
         // select elements
-        const movieEl = document.getElementById(`place`);
         const seatContainerEl = document.querySelector(`.seating-container`);
         const countEl = document.getElementById(`count`);
         const totalEl = document.getElementById(`total`);
 
         // global variables
         let seatCount = 0;
-        let ticketPrice = Number(movieEl.options[movieEl.selectedIndex].getAttribute("price"));
+        let ticketPrice = {{show_detail.price|safe}};
 
         // function
         const totalPrice = function () {
-          ticketPrice =  Number(movieEl.options[movieEl.selectedIndex].getAttribute("price"));
+          let ticketPrice = {{show_detail.price|safe}};
           countEl.textContent = seatCount;
           totalEl.innerText = seatCount * ticketPrice;
         };
-
-        // event listeners
-        movieEl.addEventListener(`change`, function () {
-          ticketPrice = Number(movieEl.options[movieEl.selectedIndex].getAttribute("price"));
-          totalPrice();
-        });
         seatContainerEl.addEventListener(`click`, function (e) {
           if (e.target.classList.contains(`seat`)) {
             if (!e.target.classList.contains(`sold`)) {

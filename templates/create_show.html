@@ -209,7 +209,7 @@
 <body>
     <div class="container">
         <h1>יצירת מופע </h1>
-        <form id="ticketForm" action="/create_show" method="post">
+        <form id="ticketForm" action="/create_show" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="showID" class="required">מספר מופע:</label>
                 <input type="number" id="showID" name="showID" required>
@@ -224,7 +224,7 @@
             </div>
             <div class="form-group picture">
                 <label for="img">תמונה למופע: </label>
-                <input class="file-uploader" onchange="upload()" type="file" id="img" name="img" accept="image/*">
+                <input class="file-uploader" onchange="upload()" type="file" id="img" name="img" accept="image/*" required>
             </div>
             <div class="main-container">
                 <div class="container">
@@ -248,7 +248,7 @@
                 </div>
             </div>
             <div>
-                <button type="button" id="submit" onclick="submitForm()">קנייה</button>
+                <button type="button" id="submit" onclick="submitForm()">צור</button>
                 <p class="note">* שדות חובה</p>
             </div>
             <!-- Hidden submit button -->

@@ -95,43 +95,43 @@ class DB_CON:
         used = self._hash_cursor.execute('SELECT Used FROM Tickets WHERE Hash = ?', (ticket_hash,)).fetchone()
 
         if used is None:
-            return "404 no such hash."
+            return "404"
 
         if not used[0]:
             self._hash_cursor.execute('UPDATE Tickets SET Used = 1 WHERE Hash = ?', (ticket_hash,))
             self._hash_conn.commit()
-            return "200 OK"
+            return "200"
 
-        return "300 Hash used."
+        return "401"
 
     def check_seat(self, seat):
-        check = self._hash_cursor.execute('SELECT 1 FROM Tickets WHERE Row = ? AND Column = ? AND Place = ?',
-                                          (seat.row, seat.column, seat.place)).fetchone()
+        check = self._hash_cursor.execute('SELECT 1 FROM Tickets WHERE Row = ? AND Column = ?',
+                                          (seat.row, seat.column)).fetchone()
 
         return check is None
 
     def get_info_by_hash(self, ticket_hash):
-        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
+        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE Hash = ?''', (ticket_hash,)).fetchone()
 
         return ticket_info or "404 no such hash."
 
     def get_info_by_something(self, something):
-        ticket_info = []
+        ticket_info = [[],[]]
         try:
-            ticket_info += self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
-                                            FROM Tickets WHERE OrderNumber = ? OR TicketNumber = ? OR Hash = ? ''',
-                                                     (something, something, something)).fetchall()
-            ticket_info += self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
+            ticket_info[0] = self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
                                             FROM Orders WHERE OrderNumber = ? OR Name = ? OR Email = ? OR PhoneNumber = ? ''',
                                                       (something, something, something, something)).fetchall()
+            if ticket_info[0] == []:
+                ticket_info[1] = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used
+                                                           FROM Tickets WHERE OrderNumber = ? OR TicketNumber = ? OR Hash = ? ''',
+                                                         (something, something, something)).fetchall()
         except sqlite3.Error:
             pass
-
-        return ticket_info or f"404 no such {something}."
+        return ticket_info
 
     def get_info_by_orderNumber_ticket(self, order_number):
-        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used, Hash
+        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used, Hash
                                             FROM Tickets WHERE OrderNumber = ?''',
                                                      (order_number,)).fetchall()
 
@@ -144,15 +144,15 @@ class DB_CON:
 
         return order_info or f"404 no such {order_number}."
     def get_info_by_ticket_number(self, ticket_num):
-        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Place, Row, Column, TicketNumber, Used
+        ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used
                                         FROM Tickets WHERE TicketNumber = ?''', (ticket_num,)).fetchone()
 
         return ticket_info or "404 no such ticket number."
 
     def store_ticket(self, ticket):
-        self._hash_cursor.execute('''INSERT INTO Tickets (OrderNumber, Place, Row, Column, TicketNumber, Used, Hash)
-                          VALUES (?, ?, ?, ?, ?, ?, ?)''',
-                                  (ticket.order_number, ticket.place, ticket.row, ticket.column,
+        self._hash_cursor.execute('''INSERT INTO Tickets (OrderNumber, Row, Column, TicketNumber, Used, Hash)
+                          VALUES (?, ?, ?, ?, ?, ?)''',
+                                  (ticket.order_number, ticket.row, ticket.column,
                                    ticket.ticket_num, ticket.used, ticket.hash))
         self._hash_conn.commit()
 
@@ -181,6 +181,6 @@ class DB_CON:
     def get_info_tickets(self, ticketGroup):
         ticket_info = {}
         for ticket in ticketGroup.tickets:
-            ticket_info[f"{ticket.hash},{ticket.show_id}"] = [
-                ticket.order_number, ticket.place, ticket.row, ticket.column, ticket.ticket_num, bool(ticket._used)]
+            ticket_info[f"{ticket.hash}"] = [
+                ticket.order_number, ticket.row, ticket.column, ticket.ticket_num, bool(ticket._used)]
         return ticket_info

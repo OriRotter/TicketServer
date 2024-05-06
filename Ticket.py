@@ -17,7 +17,7 @@ class Ticket:
         self._used = False
 
     def __str__(self):
-        return f"This ticket hash is {self._hash}. He is sitting in {self._seat.place} at {self._seat.row}x{self._seat.column}. Ticket number {self._ticket_num}. "
+        return f"This ticket hash is {self._hash}. He is at {self._seat.row}x{self._seat.column}. Ticket number {self._ticket_num}. "
 
     # Property definitions
     @property
@@ -39,14 +39,6 @@ class Ticket:
     @column.setter
     def column(self, value):
         self._seat.column = value
-
-    @property
-    def place(self):
-        return self._seat.place
-
-    @place.setter
-    def place(self, value):
-        self._seat.place = value
 
     @property
     def hash(self):

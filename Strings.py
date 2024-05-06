@@ -8,6 +8,9 @@ hash_encrypt_path = lambda showID: f"{os.getcwd()}\Databases\{showID}\encrypt-{s
 order_path = lambda showID: f"{os.getcwd()}\Databases\{showID}\{showID}-orders.db"
 order_encrypt_path = lambda showID: f"{os.getcwd()}\Databases\{showID}\encrypt-{showID}-orders.db"
 
+details_path = lambda showID: f"{os.getcwd()}\Databases\{showID}\show_details.json"
+shows_path = f"{os.getcwd()}\Databases\shows.json"
+
 KEY = b'Ya7EtDm2aMrFFSs4d5bYr5wZQBYAc3YvTEcF3GcuHmQ='
 admin_username = "admin"
 admin_password = "admin"

@@ -24,25 +24,45 @@
         .ticket-info {
             margin-top: 20px;
         }
+        .copy
+        {
+            color: blue;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Tickets</h1>
     <h2>Order number: {{order_info[0]}}</h2>
     <h2>Name: {{order_info[1]}}</h2>
+    <div class="copy">
+    <p>Copy link to ticket page</p>
+    </div>
     {% for ticket_hash, ticket_info in tickets_info.items() %}
         <div class="ticket">
             <h2>Ticket Information</h2>
             <div class="ticket-info">
                 <p><strong>Order Number:</strong> {{ ticket_info[0] }}</p>
-                <p><strong>Place:</strong> {{ ticket_info[1] }}</p>
-                <p><strong>Row:</strong> {{ ticket_info[2] }}</p>
-                <p><strong>Column:</strong> {{ ticket_info[3] }}</p>
-                <p><strong>Ticket Number:</strong> {{ ticket_info[4] }}</p>
-                <p><strong>Used:</strong> {{ ticket_info[5] }}</p>
+                <p><strong>Row:</strong> {{ ticket_info[1] }}</p>
+                <p><strong>Column:</strong> {{ ticket_info[2] }}</p>
+                <p><strong>Ticket Number:</strong> {{ ticket_info[3] }}</p>
+                <p><strong>Used:</strong> {{ ticket_info[4] }}</p>
             </div>
             <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ ticket_hash }}&size=250" alt="QR Code">
         </div>
     {% endfor %}
 </body>
+<script>
+    const copy = document.getElementsByClassName("copy")[0];
+    copy.onclick = function() {
+      document.execCommand("copy");
+    }
+    copy.addEventListener("copy", function(event) {
+    event.preventDefault();
+    if (event.clipboardData) {
+        event.clipboardData.setData("text/plain", "{{ticket_url|safe}}");
+        console.log(event.clipboardData.getData("text"))
+      }
+    });
+</script>
 </html>

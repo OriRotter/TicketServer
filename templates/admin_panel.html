@@ -21,8 +21,8 @@
       background-color: #555555;
       color: white;
     }
-    #btn1, #btn2 {
-      /* Additional styles for specific buttons if needed */
+    #btn2 {
+      color: red;
     }
     h2 {
       font-family: "Carmela", sans-serif;
@@ -39,11 +39,12 @@
     <div class="grid-item"></div>
     <div class="grid-item"></div>
     <div class="grid-item">
-      <form action="/create_show" method="post">
-        <button type="submit" value="true" name="create_show" class="btn btn-default" id="btn1">
+      <button onclick="location.href='/del_show';" name="del_show" class="btn btn-default" id="btn2">
+          <span>Del show</span>
+    </button>
+        <button onclick="location.href='/create_show';" name="create_show" class="btn btn-default" id="btn1">
           <span>Create show</span>
         </button>
-      </form>
     </div>
     <div class="grid-item"></div>
     <div class="grid-item"></div>

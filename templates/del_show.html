@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הופעות</title>
+    <title>מחיקת הופעה</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,11 +76,12 @@
             text-align: center;
             font-size: 24px;
             margin-bottom: 30px;
+            color: red;
         }
     </style>
 </head>
 <body>
-    <h1 class="title">הופעות</h1>
+    <h1 class="title">איזה הופעה למחוק?</h1>
     <div class="container">
         {% for item in data %}
         <div class="product" onclick="buyProduct({{ item.show_id }})">
@@ -97,7 +98,7 @@
         {% endfor %}
     </div>
 
-    <form id="buyForm" action="/buy" method="POST" style="display: none;">
+    <form id="buyForm" action="/del_show" method="POST" style="display: none;">
         <input type="hidden" name="show_id" id="show_id">
     </form>
 

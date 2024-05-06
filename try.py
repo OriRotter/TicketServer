@@ -46,6 +46,9 @@ def decrypt_db(show_id, KEY=KEY):
     with open(orderDB, "wb") as file:
         file.write(decrypted_data)
 
-list1 = [1, 2, 3]
-str1 = ','.join(str(e) for e in list1)
-print(str1)
+while True:
+    s = input("")
+    if s == "1":
+        encrypt_db(1)
+    if s == "2":
+        decrypt_db(1)

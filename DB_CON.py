@@ -138,7 +138,7 @@ class DB_CON:
                                             FROM Orders WHERE OrderNumber LIKE '%'||?||'%' OR Name LIKE '%'||?||'%' OR Email LIKE '%'||?||'%' OR PhoneNumber LIKE '%'||?||'%' ''',
                                                       (something, something, something, something)).fetchall()
             if ticket_info[0] == []:
-                ticket_info[1] = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used
+                ticket_info[1] = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used, Hash
                                                            FROM Tickets WHERE OrderNumber LIKE '%'||?||'%' OR TicketNumber LIKE '%'||?||'%' OR Hash = ? ''',
                                                          (something, something, something)).fetchall()
         except sqlite3.Error:
@@ -175,7 +175,7 @@ class DB_CON:
             max_ticket_number = self._hash_cursor.execute("SELECT MAX(TicketNumber) FROM Tickets").fetchone()[0]
             return (max_ticket_number or 0) + 1
         except:
-            return 1
+            return 8000
 
     def get_order_number(self):
 

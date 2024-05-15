@@ -15,7 +15,7 @@ class TicketGroup:
 
         self._order_number = db.get_order_number()
         self._tickets = []
-        self._ticket_number = db.get_order_number()
+        self._ticket_number = db.get_ticket_number()
 
         for seat in seats:
             ticket = Ticket(self._order_number, self._show_id, self._ticket_number, seat)

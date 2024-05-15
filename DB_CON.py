@@ -173,9 +173,9 @@ class DB_CON:
     def get_ticket_number(self):
         try:
             max_ticket_number = self._hash_cursor.execute("SELECT MAX(TicketNumber) FROM Tickets").fetchone()[0]
-            return (max_ticket_number or 0) + 1
+            return (max_ticket_number or 80000) + 1
         except:
-            return 8000
+            return 80000
 
     def get_order_number(self):
 

@@ -104,6 +104,21 @@ class DB_CON:
 
         return "401"
 
+    def change_use(self, ticket_hash):
+        used = self._hash_cursor.execute('SELECT Used FROM Tickets WHERE Hash = ?', (ticket_hash,)).fetchone()
+
+        if used is None:
+            return "404"
+
+        if not used[0]:
+            self._hash_cursor.execute('UPDATE Tickets SET Used = 1 WHERE Hash = ?', (ticket_hash,))
+            self._hash_conn.commit()
+            return "200"
+        else:
+            self._hash_cursor.execute('UPDATE Tickets SET Used = 0 WHERE Hash = ?', (ticket_hash,))
+            self._hash_conn.commit()
+            return "300"
+
     def check_seat(self, seat):
         check = self._hash_cursor.execute('SELECT 1 FROM Tickets WHERE Row = ? AND Column = ?',
                                           (seat.row, seat.column)).fetchone()
@@ -135,7 +150,7 @@ class DB_CON:
                                             FROM Tickets WHERE OrderNumber = ?''',
                                                      (order_number,)).fetchall()
 
-        return ticket_info or f"404 no such {order_number}."
+        return ticket_info or []
 
     def get_info_by_orderNumber_order(self, order_number):
         order_info = self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber

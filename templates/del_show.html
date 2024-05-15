@@ -78,6 +78,19 @@
             margin-bottom: 30px;
             color: red;
         }
+
+        .go-back-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .go-back-button a {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -101,6 +114,10 @@
     <form id="buyForm" action="/del_show" method="POST" style="display: none;">
         <input type="hidden" name="show_id" id="show_id">
     </form>
+
+    <div class="go-back-button">
+        <a href="/admin" >בטל</a>
+    </div>
 
     <script>
         function buyProduct(show_id) {

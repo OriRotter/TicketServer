@@ -1,6 +1,5 @@
 class Seat:
-    def __init__(self, place: str = None, row: int = None, column: int = None):
-        self._place = place
+    def __init__(self, row: int = None, column: int = None):
         self._row = row
         self._column = column
 
@@ -19,11 +18,3 @@ class Seat:
     @column.setter
     def column(self, value: int):
         self._column = value
-
-    @property
-    def place(self) -> str:
-        return self._place
-
-    @place.setter
-    def place(self, value: str):
-        self._place = value

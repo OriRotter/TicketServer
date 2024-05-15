@@ -14,14 +14,15 @@
     }
 
     .container {
-      position: fixed;
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      width: 90%; /* Adjust width for smaller screens */
+      max-width: 300px; /* Set maximum width */
     }
 
     #login {
-      width: 280px;
       background-color: #363b41;
       padding: 20px;
       border-radius: 5px;
@@ -33,7 +34,7 @@
 
     #login form input[type="text"],
     #login form input[type="password"] {
-      width: calc(100%); /* Subtract padding from width */
+      width: 100%;
       height: 40px;
       margin-bottom: 15px;
       padding: 0 10px;
@@ -41,9 +42,8 @@
       background-color: #3b4148;
       color: #eee;
       border-radius: 3px;
-      box-sizing: border-box; /* Ensure padding is included in the width */
+      box-sizing: border-box;
     }
-
 
     #login form input[type="submit"] {
       width: 100%;

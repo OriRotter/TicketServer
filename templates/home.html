@@ -10,6 +10,7 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 20px;
+            position: relative; /* Set position to relative for the body */
         }
 
         .container {
@@ -77,6 +78,20 @@
             font-size: 24px;
             margin-bottom: 30px;
         }
+
+        .login-button {
+            position: absolute; /* Set position to absolute */
+            top: 20px; /* Adjust top position */
+            right: 20px; /* Adjust right position */
+        }
+
+        .login-button a {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -100,6 +115,10 @@
     <form id="buyForm" action="/buy" method="POST" style="display: none;">
         <input type="hidden" name="show_id" id="show_id">
     </form>
+
+    <div class="login-button">
+        <a href="/admin">Admin Login</a>
+    </div>
 
     <script>
         function buyProduct(show_id) {

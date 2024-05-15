@@ -21,27 +21,29 @@
         }
 
         .container {
-            max-width: 500px;
-            margin: 50px auto;
+            width: 90%;
+            max-width: none;
+            margin: 20px auto;
             padding: 20px;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 22px;
             color: #403866;
             text-align: center;
             margin-bottom: 20px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         label {
-            font-size: 18px;
+            font-size: 16px;
             color: #666666;
             display: block;
             margin-bottom: 5px;
@@ -65,19 +67,20 @@
             border-color: #403866;
         }
 
-        button[type="submit"] {
+        button[type="button"] {
             width: 100%;
             padding: 12px;
             background-color: #403866;
             border: none;
             border-radius: 6px;
             color: #ffffff;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
 
-        button[type="submit"]:hover {
+        button[type="button"]:hover {
             background-color: #2c2c5e;
         }
 
@@ -88,153 +91,161 @@
         }
 
         .note {
+            color: red;
             font-size: 14px;
-            color: #666666;
             margin-top: 10px;
         }
-        a {
-          text-decoration: none;
-        }
 
-        li {
-          list-style: none;
-        }
-
-        img {
-          width: 100%;
-          height: auto;
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .seat {
-          background-color: var(--white-clr);
-          background-image: url(images/seat-icon.png);
-          background-size: cover;
-          width: 1.5rem;
-          height: 1.5rem;
-          border-top-left-radius: 10px;
-          border-top-right-radius: 10px;
-        }
-        .main-container {
-          height: auto;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+            background-color: var(--white-clr);
+            background-image: url(images/seat-icon.png);
+            background-size: cover;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
 
         .container {
-          background-color: var(--grey-inner);
-          text-align: center;
-          border-radius: 48px;
-          width: 40rem;
+            background-color: var(--grey-inner);
+            text-align: center;
+            border-radius: 48px;
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
         }
 
         .movie-container {
-          font-size: 1.2rem;
-          font-weight: 600;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
         select {
-          border: none;
-          direction: rtl;
-          border-radius: 8px;
-          width: 8rem;
-          font-size: 1.1rem;
-          font-weight: 500;
+            border: none;
+            direction: rtl;
+            border-radius: 8px;
+            width: 8rem;
+            font-size: 1rem;
+            font-weight: 500;
         }
 
         option {
-          text-align: left;
+            text-align: left;
         }
 
         .seat.sold {
-          background-color: gray;
+            background-color: gray;
         }
 
         .seat.selected {
-          background-color: cyan;
+            background-color: cyan;
         }
 
         .showcase-container li {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
         }
 
         .seating-container .seat:hover {
-          cursor: pointer;
+            cursor: pointer;
         }
 
         .seating-container .seat.sold:hover {
-          cursor: not-allowed;
+            cursor: not-allowed;
         }
 
         .showcase-container {
-          margin-top: 2rem;
-          font-size: 1.2rem;
-          font-weight: 600;
-          background-color: rgba(0, 0, 0, 0.05);
-          height: 2.5rem;
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: rgba(0, 0, 0, 0.05);
+            height: 2rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
 
         .seating-container {
-          height: 400px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          perspective: 1000px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            perspective: 1000px;
         }
 
         .screen {
-          margin-bottom: 1rem;
-          background-color: gray;
-          width: 12rem;
-          height: 2rem;
-          padding: 3rem;
-          transform: rotateX(-45deg);
-          box-shadow: 0 25px 25px rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+            background-color: gray;
+            width: 12rem;
+            height: 2rem;
+            padding: 3rem;
+            transform: rotateX(-45deg);
+            box-shadow: 0 25px 25px rgba(255, 255, 255, 0.8);
         }
 
         .row {
-          height: 2rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          column-gap: 1.2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            column-gap: 1rem;
         }
 
-
         .summary {
-          margin-top: 1rem;
+            margin-top: 1rem;
         }
 
         @media screen and (max-width: 375px) {
-          .container {
-            width: 25rem;
-          }
+            .container {
+                width: 90%;
+                max-width: none;
+            }
 
-          .showcase-container li {
-            margin-right: 1rem;
-          }
+            .showcase-container li {
+                margin-right: 0.5rem;
+            }
 
-          .row {
-            column-gap: 0.5rem;
-          }
+            .row {
+                column-gap: 0.5rem;
+            }
 
-          .summary {
-            text-align: justify;
-          }
+            .summary {
+                text-align: justify;
+            }
+        }
 
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 999;
+        }
+
+        .back-button:hover {
+            background-color: darkblue;
+        }
     </style>
 </head>
 
 <body>
+    <a href="#"  class="back-button" onclick="window.history.back(); return false;"><i class="fas fa-arrow-right"></i> חזור</a>
     <div class="container">
-        <h1>קניית כרטיס למופע </h1>
-        <h2>{{show_detail.name}} </h2>
+        <h1>קניית כרטיס למופע</h1>
+        <h2>{{show_detail.name}}</h2>
         <form id="ticketForm" action="/order" method="post">
             <div class="form-group">
                 <label for="email" class="required">אימייל:</label>
@@ -249,46 +260,50 @@
                 <input type="text" id="name" name="name">
             </div>
             <div class="main-container">
-              <div class="container">
-                <div class="movie-container">
-                  <label>מחיר לכרטיס {{show_detail.price}}</label>
-                </div>
-                <ul class="showcase-container">
-                  <li>
-                    <div class="seat sold"></div>
-                    <small>תפוס</small>
-                  </li>
-                  <li>
-                    <div class="seat available"></div>
-                    <small>פנוי</small>
-                  </li>
-                  <li>
-                    <div class="seat selected"></div>
-                    <small>נבחר</small>
-                  </li>
-                </ul>
-                <div class="seating-container">
-                <div class="screen"></div>
-                    {% for row in seatMap %}
+                <div class="container">
+                    <div class="movie-container">
+                        <label>מחיר לכרטיס ₪{{show_detail.price}}</label>
+                    </div>
+                    <ul class="showcase-container">
+                        <li>
+                            <div class="seat sold"></div>
+                            <small>תפוס</small>
+                        </li>
+                        <li>
+                            <div class="seat available"></div>
+                            <small>פנוי</small>
+                        </li>
+                        <li>
+                            <div class="seat selected"></div>
+                            <small>נבחר</small>
+                        </li>
+                    </ul>
+                    <div class="seating-container">
+                        <div class="screen"></div>
+                        {% for row in seat_map %}
                         <div class="row">
                             {% for seat in row %}
-                                <div class="{{ seat['status'] }}" value="{{ seat['index'] }}"></div>
+                            <div class="{{ seat['status'] }}" value="{{ seat['index'] }}"></div>
                             {% endfor %}
                         </div>
-                    {% endfor %}
-                <div class="summary">
-                  <p>בחרת <span class="bold" id="count">0</span> מושבים, מחיר סופי:  <span class="bold" id="total">0</span> ₪</p>
+                        {% endfor %}
+                        <div class="summary">
+                            <p>בחרת <span class="bold" id="count">0</span> מושבים, מחיר סופי: <span class="bold"
+                                    id="total">0</span> ₪</p>
+                        </div>
+                    </div>
+                    <!-- Closing .container -->
                 </div>
-              </div> <!-- Closing .container -->
-            </div> <!-- Closing .main-container -->
+                <!-- Closing .main-container -->
             </div>
-            <div> <!-- New div element for button and note -->
+            <!-- New div element for button and note -->
+            <div>
                 <button type="button" onclick="submitForm()">קנייה</button>
                 <p class="note">* שדות חובה</p>
             </div>
         </form>
     </div>
-   <script>
+    <script>
         function submitForm() {
             const selectedSeats = document.querySelectorAll('.row .seat.selected');
 
@@ -316,9 +331,7 @@
             }
         }
 
-
-
-       `use strict`;
+        `use strict`;
         // select elements
         const seatContainerEl = document.querySelector(`.seating-container`);
         const countEl = document.getElementById(`count`);
@@ -330,21 +343,21 @@
 
         // function
         const totalPrice = function () {
-          let ticketPrice = {{show_detail.price|safe}};
-          countEl.textContent = seatCount;
-          totalEl.innerText = seatCount * ticketPrice;
+            let ticketPrice = {{show_detail.price|safe}};
+            countEl.textContent = seatCount;
+            totalEl.innerText = seatCount * ticketPrice;
         };
         seatContainerEl.addEventListener(`click`, function (e) {
-          if (e.target.classList.contains(`seat`)) {
-            if (!e.target.classList.contains(`sold`)) {
-              e.target.classList.toggle(`selected`);
-              const selectedSeatEl = document.querySelectorAll(`.row .seat.selected`);
-              seatCount = selectedSeatEl.length;
-              totalPrice();
+            if (e.target.classList.contains(`seat`)) {
+                if (!e.target.classList.contains(`sold`)) {
+                    e.target.classList.toggle(`selected`);
+                    const selectedSeatEl = document.querySelectorAll(`.row .seat.selected`);
+                    seatCount = selectedSeatEl.length;
+                    totalPrice();
+                }
             }
-          }
         });
-   </script>
+    </script>
 </body>
 
 </html>

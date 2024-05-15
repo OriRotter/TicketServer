@@ -1,55 +1,82 @@
 <!DOCTYPE html>
-<html dir="rtl">
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    .grid-container {
-      display: grid;
-      grid-template-columns: auto auto auto;
-      padding: 10px;
-      position: relative;
-    }
-    .grid-item {
-      padding: 20px;
-      font-size: 30px;
-      text-align: center;
-    }
-    .btn {
-      font-family: "Carmela", sans-serif;
-      height: 100px;
-      width: 100px;
-      background-color: #555555;
-      color: white;
-    }
-    #btn2 {
-      color: red;
-    }
-    h2 {
-      font-family: "Carmela", sans-serif;
-    }
-  </style>
-  <title>לוח אדמין</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            justify-content: center;
+        }
+        .btn {
+            height: 100px;
+            width: 100%;
+            background-color: #555555;
+            color: white;
+            font-family: "Arial", sans-serif;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #333333;
+        }
+        #btn2 {
+            color: red;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            font-family: "Arial", sans-serif;
+        }
+        .back-button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ccc;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #999;
+        }
+        @media only screen and (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="grid-container">
-    <div class="grid-item"></div>
-    <div class="grid-item">
-      <h2>Operate buttons</h2>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>Operational Actions</h2>
+        </div>
+        <div class="grid-item">
+            <button onclick="location.href='/del_show';" class="btn" id="btn2">Delete Show</button>
+        </div>
+        <div class="grid-item">
+            <button onclick="location.href='/create_show';" class="btn" id="btn1">Create Show</button>
+        </div>
+        <div class="grid-item">
+            <!-- Back button -->
+            <a href="#" class="back-button" onclick="window.history.back(); return false;">חזור</a>
+        </div>
     </div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item">
-      <button onclick="location.href='/del_show';" name="del_show" class="btn btn-default" id="btn2">
-          <span>Del show</span>
-    </button>
-        <button onclick="location.href='/create_show';" name="create_show" class="btn btn-default" id="btn1">
-          <span>Create show</span>
-        </button>
-    </div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item"></div>
-  </div>
 </body>
 </html>

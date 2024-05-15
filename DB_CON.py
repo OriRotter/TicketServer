@@ -135,16 +135,15 @@ class DB_CON:
         ticket_info = [[],[]]
         try:
             ticket_info[0] = self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
-                                            FROM Orders WHERE OrderNumber = ? OR Name = ? OR Email = ? OR PhoneNumber = ? ''',
+                                            FROM Orders WHERE OrderNumber LIKE '%'||?||'%' OR Name LIKE '%'||?||'%' OR Email LIKE '%'||?||'%' OR PhoneNumber LIKE '%'||?||'%' ''',
                                                       (something, something, something, something)).fetchall()
             if ticket_info[0] == []:
                 ticket_info[1] = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used
-                                                           FROM Tickets WHERE OrderNumber = ? OR TicketNumber = ? OR Hash = ? ''',
+                                                           FROM Tickets WHERE OrderNumber LIKE '%'||?||'%' OR TicketNumber LIKE '%'||?||'%' OR Hash = ? ''',
                                                          (something, something, something)).fetchall()
         except sqlite3.Error:
             pass
         return ticket_info
-
     def get_info_by_orderNumber_ticket(self, order_number):
         ticket_info = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used, Hash
                                             FROM Tickets WHERE OrderNumber = ?''',

@@ -36,13 +36,7 @@ class DB_CON:
         self._encrypt_db()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self._hash_conn.commit()
-        self._order_conn.commit()
-        self._hash_cursor.close()
-        self._order_cursor.close()
-        self._hash_conn.close()
-        self._order_conn.close()
-        self._encrypt_db()
+        self.close_db()
 
     def _encrypt_db(self, KEY=KEY):
         try:
@@ -137,7 +131,7 @@ class DB_CON:
             ticket_info[0] = self._order_cursor.execute('''SELECT OrderNumber, Name, Email, PhoneNumber
                                             FROM Orders WHERE OrderNumber LIKE '%'||?||'%' OR Name LIKE '%'||?||'%' OR Email LIKE '%'||?||'%' OR PhoneNumber LIKE '%'||?||'%' ''',
                                                       (something, something, something, something)).fetchall()
-            if ticket_info[0] == []:
+            if ticket_info[0]:
                 ticket_info[1] = self._hash_cursor.execute('''SELECT OrderNumber, Row, Column, TicketNumber, Used, Hash
                                                            FROM Tickets WHERE OrderNumber LIKE '%'||?||'%' OR TicketNumber LIKE '%'||?||'%' OR Hash = ? ''',
                                                          (something, something, something)).fetchall()
@@ -196,5 +190,5 @@ class DB_CON:
         ticket_info = {}
         for ticket in ticketGroup.tickets:
             ticket_info[f"{ticket.hash}"] = [
-                ticket.order_number, ticket.row, ticket.column, ticket.ticket_num, bool(ticket._used)]
+                ticket.order_number, ticket.row, ticket.column, ticket.ticket_num, bool(ticket.used)]
         return ticket_info

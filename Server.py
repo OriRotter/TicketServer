@@ -168,6 +168,9 @@ def get_shows_id():
 
 @app.route('/use', methods=["POST"])
 def use():
+    password = request.form['password'].strip()
+    if password != admin_password:
+        return
     ticket_hash = request.form['hash'].strip()
     show_id = int(request.form['showID'].strip())
 
@@ -179,6 +182,9 @@ def use():
 
 @app.route('/change', methods=["POST"])
 def change():
+    password = request.form['password'].strip()
+    if password != admin_password:
+        return
     ticket_hash = request.form['hash'].strip()
     show_id = int(request.form['showID'].strip())
 
@@ -191,6 +197,9 @@ def change():
 @app.route('/search', methods=["POST"])
 def search():
     try:
+        password = request.form['password'].strip()
+        if password != admin_password:
+            return
         text = request.form['search'].strip()
         show_id = int(request.form['showID'].strip())
         db = DB_CON(show_id=show_id)
@@ -207,6 +216,9 @@ def search():
 @app.route('/order_number', methods=["POST"])
 def order_number():
     try:
+        password = request.form['password'].strip()
+        if password != admin_password:
+            return
         order_number_user = request.form['order_number'].strip()
         show_id = int(request.form['showID'].strip())
         db = DB_CON(show_id=show_id)

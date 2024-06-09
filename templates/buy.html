@@ -322,20 +322,22 @@
             showIDinput.value = {{show_detail.show_id|safe}};
             // Check if the form exists
             const ticketForm = document.getElementById('ticketForm');
-            if (ticketForm) {
-                ticketForm.appendChild(seatsInput);
-                ticketForm.appendChild(showIDinput);
-                if(ticketForm.email.value != "" || ticketForm.phoneNumber.value != "" or selectedSeatsString != "")
+            if (ticketForm)
+            {
+                if(ticketForm.email.value != "" && ticketForm.phoneNumber.value != "" && seatsInput.value != "")
                 {
+                    ticketForm.appendChild(seatsInput);
+                    ticketForm.appendChild(showIDinput);
                     ticketForm.submit();
                 }
                 else
                 {
                     alert("Fill all the fields")
                 }
-            } else {
+            }
+            else
+            {
                 console.error('Form with id "ticketForm" not found.');
-                }
             }
         }
 

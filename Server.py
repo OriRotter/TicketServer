@@ -1,8 +1,7 @@
 import json
-import os
 
 from flask import Flask, render_template, request, send_file, session, redirect, url_for
-
+import hashlib
 from DB_CON import DB_CON
 from Seat import Seat
 from Strings import KEY, admin_username, admin_password
@@ -97,8 +96,8 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
 
-    username = request.form['username'].strip()
-    password = request.form['password'].strip()
+    username = hashlib.sha256(request.form['username'].strip().encode()).hexdigest()
+    password = hashlib.sha256(request.form['password'].strip().encode()).hexdigest()
 
     if username == admin_username and password == admin_password:
         session['username'] = username
@@ -169,7 +168,7 @@ def get_shows_id():
 @app.route('/use', methods=["POST"])
 def use():
     password = request.form['password'].strip()
-    if password != admin_password:
+    if hashlib.sha256(password.encode()).hexdigest() != admin_password:
         return
     ticket_hash = request.form['hash'].strip()
     show_id = int(request.form['showID'].strip())
@@ -183,7 +182,7 @@ def use():
 @app.route('/change', methods=["POST"])
 def change():
     password = request.form['password'].strip()
-    if password != admin_password:
+    if hashlib.sha256(password.encode()).hexdigest() != admin_password:
         return
     ticket_hash = request.form['hash'].strip()
     show_id = int(request.form['showID'].strip())
@@ -198,7 +197,7 @@ def change():
 def search():
     try:
         password = request.form['password'].strip()
-        if password != admin_password:
+        if hashlib.sha256(password.encode()).hexdigest() != admin_password:
             return
         text = request.form['search'].strip()
         show_id = int(request.form['showID'].strip())
@@ -217,7 +216,7 @@ def search():
 def order_number():
     try:
         password = request.form['password'].strip()
-        if password != admin_password:
+        if hashlib.sha256(password.encode()).hexdigest() != admin_password:
             return
         order_number_user = request.form['order_number'].strip()
         show_id = int(request.form['showID'].strip())

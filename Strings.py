@@ -12,5 +12,5 @@ details_path = lambda showID: f"{os.getcwd()}\Databases\{showID}\show_details.js
 shows_path = f"{os.getcwd()}\Databases\shows.json"
 
 KEY = b'Ya7EtDm2aMrFFSs4d5bYr5wZQBYAc3YvTEcF3GcuHmQ='
-admin_username = "admin"
-admin_password = "admin"
+admin_username = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+admin_password = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"

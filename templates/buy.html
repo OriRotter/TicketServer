@@ -325,7 +325,14 @@
             if (ticketForm) {
                 ticketForm.appendChild(seatsInput);
                 ticketForm.appendChild(showIDinput);
-                ticketForm.submit();
+                if(ticketForm.email.value != "" || ticketForm.phoneNumber.value != "" or selectedSeatsString != "")
+                {
+                    ticketForm.submit();
+                }
+                else
+                {
+                    alert("Fill all the fields")
+                }
             } else {
                 console.error('Form with id "ticketForm" not found.');
             }
